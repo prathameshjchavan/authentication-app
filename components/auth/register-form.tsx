@@ -18,7 +18,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
-import { login } from "@/actions/login";
+import { register } from "@/actions/register";
 import { useState, useTransition } from "react";
 
 const RegisterForm = () => {
@@ -40,7 +40,7 @@ const RegisterForm = () => {
 		setSuccess("");
 
 		startTransition(() => {
-			login(values).then((data) => {
+			register(values).then((data) => {
 				setError(data.error);
 				setSuccess(data.success);
 			});
@@ -56,6 +56,23 @@ const RegisterForm = () => {
 		>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<FormField
+						control={form.control}
+						name="name"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Name</FormLabel>
+								<FormControl>
+									<Input
+										disabled={isPending}
+										placeholder="John Doe"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 					<FormField
 						control={form.control}
 						name="email"
@@ -91,23 +108,7 @@ const RegisterForm = () => {
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name="name"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Name</FormLabel>
-								<FormControl>
-									<Input
-										disabled={isPending}
-										placeholder="John Doe"
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+
 					<FormError message={error} />
 					<FormSuccess message={success} />
 					<Button disabled={isPending} type="submit" className="w-full">
