@@ -28,6 +28,11 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -36,4 +41,5 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
+  role          UserRole  @default(USER)
 }
