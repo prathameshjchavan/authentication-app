@@ -19,6 +19,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
+import { reset } from "@/actions/reset";
 
 const ResetForm = () => {
 	const [isPending, startTransition] = useTransition();
@@ -37,7 +38,10 @@ const ResetForm = () => {
 		setSuccess("");
 
 		startTransition(() => {
-			console.log(values)
+			reset(values).then((data) => {
+				setError(data.error);
+				setSuccess(data.success);
+			});
 		});
 	};
 
