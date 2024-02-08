@@ -20,6 +20,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
+import { newPassword } from "@/actions/new-password";
 
 const NewPasswordForm = () => {
 	const [isPending, startTransition] = useTransition();
@@ -41,12 +42,12 @@ const NewPasswordForm = () => {
 
 		console.log({ values });
 
-		// startTransition(() => {
-		// 	reset(values).then((data) => {
-		// 		setError(data.error);
-		// 		setSuccess(data.success);
-		// 	});
-		// });
+		startTransition(() => {
+			newPassword(values, token).then((data) => {
+				setError(data.error);
+				setSuccess(data.success);
+			});
+		});
 	};
 
 	return (
