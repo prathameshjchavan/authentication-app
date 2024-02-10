@@ -8,6 +8,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const AdminPage = () => {
+	const onApiRouteClick = () => {
+		fetch("/api/admin").then((response) => {
+			if (response.ok) {
+				console.log("OKAY");
+			} else {
+                console.log('FORBIDDEN')
+            }
+		});
+	};
+
 	return (
 		<Card className="w-[600px]">
 			<CardHeader>
@@ -17,14 +27,14 @@ const AdminPage = () => {
 				<RoleGate allowedRole={UserRole.ADMIN}>
 					<FormSuccess message="You are allowed to see this content!" />
 				</RoleGate>
-                <div className="flex items-center justify-between rounded-lg border p-3 shadow-md">
-                    <p className="text-sm font-medium">Admin-only API route</p>
-                    <Button>Click to test</Button>
-                </div>
-                <div className="flex items-center justify-between rounded-lg border p-3 shadow-md">
-                    <p className="text-sm font-medium">Admin-only Server Action</p>
-                    <Button>Click to test</Button>
-                </div>
+				<div className="flex items-center justify-between rounded-lg border p-3 shadow-md">
+					<p className="text-sm font-medium">Admin-only API route</p>
+					<Button onClick={onApiRouteClick}>Click to test</Button>
+				</div>
+				<div className="flex items-center justify-between rounded-lg border p-3 shadow-md">
+					<p className="text-sm font-medium">Admin-only Server Action</p>
+					<Button>Click to test</Button>
+				</div>
 			</CardContent>
 		</Card>
 	);
