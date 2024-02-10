@@ -19,6 +19,7 @@ declare module "next-auth" {
 export const {
 	handlers: { GET, POST },
 	auth,
+	update,
 	signIn,
 	signOut,
 } = NextAuth({
@@ -62,6 +63,11 @@ export const {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
 			}
 
+			if (session.user) {
+				session.user.name = token.name;
+				session.user.email = token.email;
+			}
+
 			return session;
 		},
 		async jwt({ token }) {
@@ -72,6 +78,8 @@ export const {
 			if (!existingUser) return token;
 
 			token.role = existingUser.role;
+			token.name = existingUser.name;
+			token.email = existingUser.email;
 			token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
 			return token;
