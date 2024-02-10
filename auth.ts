@@ -9,7 +9,10 @@ import { getUserById } from "./data/user";
 
 declare module "next-auth" {
 	interface Session {
-		user: { role: UserRole } & DefaultSession["user"];
+		user: {
+			role: UserRole;
+			isTwoFactorEnabled: boolean;
+		} & DefaultSession["user"];
 	}
 }
 
@@ -55,6 +58,10 @@ export const {
 				session.user.role = token.role as UserRole;
 			}
 
+			if (session.user) {
+				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+			}
+
 			return session;
 		},
 		async jwt({ token }) {
@@ -65,6 +72,7 @@ export const {
 			if (!existingUser) return token;
 
 			token.role = existingUser.role;
+			token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
 			return token;
 		},

@@ -20,7 +20,7 @@ const UserButton = () => {
 		<DropdownMenu>
 			<DropdownMenuTrigger>
 				<Avatar>
-					<AvatarImage src={user?.image || ""} />
+					<AvatarImage referrerPolicy="no-referrer" src={user?.image || ""} />
 					<AvatarFallback className="bg-sky-500">
 						<FaUser className="text-white" />
 					</AvatarFallback>
