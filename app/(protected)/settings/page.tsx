@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useTransition, useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { UserRole } from "@prisma/client";
@@ -94,60 +94,65 @@ const SettingsPage = () => {
 									</FormItem>
 								)}
 							/>
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Email</FormLabel>
-										<FormControl>
-											<Input
-												{...field}
-												placeholder="john.doe@example.com"
-												type="email"
-												disabled={isPending}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Password</FormLabel>
-										<FormControl>
-											<Input
-												{...field}
-												placeholder="123456"
-												type="password"
-												disabled={isPending}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="newPassword"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>New Password</FormLabel>
-										<FormControl>
-											<Input
-												{...field}
-												placeholder="123456"
-												type="password"
-												disabled={isPending}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+							{user?.isOAuth === false && (
+								<Fragment>
+									<FormField
+										control={form.control}
+										name="email"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Email</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														placeholder="john.doe@example.com"
+														type="email"
+														disabled={isPending}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name="password"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Password</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														placeholder="123456"
+														type="password"
+														disabled={isPending}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name="newPassword"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>New Password</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														placeholder="123456"
+														type="password"
+														disabled={isPending}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</Fragment>
+							)}
+
 							<FormField
 								control={form.control}
 								name="role"
@@ -173,7 +178,8 @@ const SettingsPage = () => {
 									</FormItem>
 								)}
 							/>
-							<FormField
+							{user?.isOAuth === false && (
+								<FormField
 								control={form.control}
 								name="isTwoFactorEnabled"
 								render={({ field }) => (
@@ -194,6 +200,8 @@ const SettingsPage = () => {
 									</FormItem>
 								)}
 							/>
+							)}
+							
 						</div>
 						<FormError message={error} />
 						<FormSuccess message={success} />

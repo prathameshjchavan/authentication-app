@@ -8,7 +8,7 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
 	return (
-		<div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-gradient">
+		<div className="h-full w-full p-[calc(2.5rem-4px)] overflow-y-auto flex flex-col gap-y-10 items-center justify-start bg-gradient">
 			<Navbar />
 			{children}
 		</div>
