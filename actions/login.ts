@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import { AuthError } from "next-auth";
+import bcrypt from "bcryptjs";
 
 import { LoginSchema } from "@/schemas";
 import { signIn } from "@/auth";
@@ -19,6 +20,7 @@ import { getTwoFactorConfirmationByUserId } from "./../data/two-factor-confirmat
 export const login = async (values: z.infer<typeof LoginSchema>) => {
 	const validatedField = LoginSchema.safeParse(values);
 
+	// Check whether fields are valid
 	if (!validatedField.success) {
 		return { error: "Invalid fields!" };
 	}
@@ -26,10 +28,12 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
 	const { email, password, code } = validatedField.data;
 	const existingUser = await getUserByEmail(email);
 
+	// Check if email exists for credentials authentication
 	if (!existingUser || !existingUser.email || !existingUser.password) {
 		return { error: "Email does not exist!" };
 	}
 
+	// Send verification email for onboarding users
 	if (!existingUser.emailVerified) {
 		const verificationToken = await generateVerificationToken(
 			existingUser.email
@@ -43,6 +47,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
 		return { success: "Confirmation email sent!" };
 	}
 
+	const isAuthenticated = await bcrypt.compare(
+		values.password,
+		existingUser.password
+	);
+
+	if (!isAuthenticated) return { error: "Invalid credentials!" };
+
+	// Perform 2FA authentication
 	if (existingUser.isTwoFactorEnabled) {
 		if (code) {
 			const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
