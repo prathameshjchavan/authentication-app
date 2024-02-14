@@ -65,7 +65,11 @@ const SettingsPage = () => {
 						if (session) await updateServerSession(session);
 					}
 				})
-				.catch(() => setError("Something went wrong!"));
+				.catch(() => setError("Something went wrong!"))
+				.finally(() => {
+					form.setValue("password", "");
+					form.setValue("newPassword", "");
+				});
 		});
 	};
 
